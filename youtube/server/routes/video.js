@@ -5,6 +5,11 @@ const router = express.Router();
 const { auth } = require("../middleware/auth");
 const multer = require("multer");
 var ffmpeg = require('fluent-ffmpeg');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffprobePath = require('@ffprobe-installer/ffprobe').path;
+
+ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfprobePath(ffprobePath);
 
 //STORAGE MULTER CONFIG
 let storage = multer.diskStorage({
@@ -46,6 +51,7 @@ router.post('/thumbnail', (req, res) => {
 
     //비디오 러닝타임도 가져오기
     ffmpeg.ffprobe(req.body.url, function (err, metadata) {
+        console.dir("err = " + err);
         console.dir("metadata = " + metadata);
         console.log(metadata.format.duration);
         fileDuration = metadata.format.duration
@@ -56,7 +62,6 @@ router.post('/thumbnail', (req, res) => {
         .on('filenames', function (filenames) {
             console.log('Will generate ' + filenames.join(', '));
             console.log(filenames);
-
             filePath = "uploads/thumbnails/" + filenames[0]
         })
         .on('end', function () {
