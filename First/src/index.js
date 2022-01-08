@@ -42,7 +42,8 @@ function App() {
       username,
       email
     };
-    setUsers([...users, user]);
+    //setUsers([...users, user]);  //spread 방법
+    setUsers(users.concat(user));  //concat 방법
 
     setInputs({
       username: '',
