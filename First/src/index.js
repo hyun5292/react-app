@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import InputSample from './components/InputSample';
+import UserList from './components/UserList';
 
 function App () {
   return (
-    <InputSample />
+    <UserList />
   );
 }
 
