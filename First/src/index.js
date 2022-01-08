@@ -51,6 +51,11 @@ function App() {
     });
     nextId.current += 1;
   };
+
+  const onRemove = (id) => {
+    //일부러 아닌것들만 골라서 새로 배열을 만든거야
+    setUsers(users.filter(user => user.id !== id));
+  };
   return (
     <>
       <CreateUser
@@ -59,7 +64,7 @@ function App() {
         onChange={onChange}
         onCreate={onCreate}
       />
-      <UserList users={users} />
+      <UserList users={users} onRemove={onRemove} />
     </>
   );
 }
