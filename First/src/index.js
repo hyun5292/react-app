@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import UserList from './components/UserList';
@@ -10,13 +10,15 @@ function App() {
     email: ''
   });
   const { username, email } = inputs;
-  const onChange = e => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value
-    });
-  };
+  const onChange = useCallback(
+    e => {
+      const { name, value } = e.target;
+      setInputs({
+        ...inputs,
+        [name]: value
+      });
+    }, [inputs]
+  );
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -39,7 +41,7 @@ function App() {
   ]);
 
   const nextId = useRef(4);
-  const onCreate = () => {
+  const onCreate = useCallback(() => {
     const user = {
       id: nextId.current,
       username,
@@ -53,19 +55,23 @@ function App() {
       email: ''
     });
     nextId.current += 1;
-  };
+    }, [users, username, email]);
 
-  const onRemove = (id) => {
-    //일부러 아닌것들만 골라서 새로 배열을 만든거야
-    setUsers(users.filter(user => user.id !== id));
-  };
-  const onToggle = (id) => {
-    setUsers(
-      users.map(user => 
-        user.id === id ? { ...user, active: !user.active } : user
-      )
-    );
-  };
+  const onRemove = useCallback(
+    (id) => {
+      //일부러 아닌것들만 골라서 새로 배열을 만든거야
+      setUsers(users.filter(user => user.id !== id));
+    }, [users]
+  );
+  const onToggle = useCallback(
+    (id) => {
+      setUsers(
+        users.map(user => 
+          user.id === id ? { ...user, active: !user.active } : user
+        )
+      );
+    }, [users]
+  );
   return (
     <>
       <CreateUser
