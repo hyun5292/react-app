@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import UserList from './components/UserList';
 import CreateUser from './components/CreateUser';
+import Counter from './components/Counter';
 
 function countActiveUsers(users) {
   console.log('활성 사용자 수를 세는 중...');
