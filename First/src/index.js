@@ -1,8 +1,13 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import UserList from './components/UserList';
 import CreateUser from './components/CreateUser';
+
+function countActiveUsers(users) {
+  console.log('활성 사용자 수를 세는 중...');
+  return users.filter(user => user.active).length;
+}
 
 function App() {
   const [inputs, setInputs] = useState({
@@ -17,7 +22,7 @@ function App() {
         ...inputs,
         [name]: value
       });
-    }, [inputs]
+    }, []
   );
   const [users, setUsers] = useState([
     {
@@ -55,13 +60,13 @@ function App() {
       email: ''
     });
     nextId.current += 1;
-    }, [users, username, email]);
+    }, [username, email]);
 
   const onRemove = useCallback(
     (id) => {
       //일부러 아닌것들만 골라서 새로 배열을 만든거야
       setUsers(users.filter(user => user.id !== id));
-    }, [users]
+    }, []
   );
   const onToggle = useCallback(
     (id) => {
@@ -70,8 +75,10 @@ function App() {
           user.id === id ? { ...user, active: !user.active } : user
         )
       );
-    }, [users]
-  );
+    }, []
+  ); 
+  //const count = countActiveUsers(users);
+  const count = useMemo(() => countActiveUsers(users), [users]);
   return (
     <>
       <CreateUser
@@ -85,6 +92,7 @@ function App() {
         onRemove={onRemove} 
         onToggle={onToggle}
       />
+      <div>활성 사용자 수: {count}</div>
     </>
   );
 }
