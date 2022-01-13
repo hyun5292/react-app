@@ -2,8 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import './Button.scss';
 
-function Button({ children, size, color }) {
-  return <button className={classNames('Button', size, color)}>{children}</button>;
+function Button({ children, size, color, outline }) {
+  return (
+    //outline을 객체 안에 넣으면 true일 때에만 적용
+    <button className={classNames('Button', size, color, { outline })}>
+      {children}
+    </button>
+  );
 }
 
 Button.defaultProps = {
